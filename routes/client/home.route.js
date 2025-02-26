@@ -1,11 +1,6 @@
 const express = require("express")
 const router = express.Router()
-
-router.get("/",(req,res)=>{
-    console.log("Kết nối với trang chủ")
-    res.render('client/pages/home/index.pug',{
-
-    })
-})
+const controller = require("../../controllers/clients/home.controller")
+router.get("/", controller.index)
 
 module.exports = router; 
