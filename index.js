@@ -1,6 +1,11 @@
 const express = require("express");
+const database = require("./config/database");
 require('dotenv').config();
+require('dotenv').config();
+
+database.connect();
 const route = require("./routes/client/index.route"); // import router để sài
+
 const app = express();
 app.use(express.static("public"));
 const port = process.env.PORT;
