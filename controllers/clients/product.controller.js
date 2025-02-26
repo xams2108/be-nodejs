@@ -9,7 +9,6 @@ module.exports.index = async(req,res)=>{
         item.pricenew = (item.price*(100-item.discountPercentage)/100).toFixed(0);
         return item;
     })
-    console.log(products)
     res.render('client/pages/products/index.pug',{
         title: "Danh Mục Sản phẩm",
         products: newproducts
