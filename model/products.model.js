@@ -3,9 +3,9 @@ const productScheme = new mongoose.Schema({
     title: String,
     description: String,
     price: Number,
-    discountPercentage: Float32Array,
+    discountPercentage: Number,
     stock: Number, 
-    thumbnail: Sting,
+    thumbnail: String,
     status: String, 
     position: Number,
     deleted: Boolean
