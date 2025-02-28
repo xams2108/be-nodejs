@@ -1,5 +1,7 @@
-module.exports.dashboard = (req,res)=>{
+module.exports.index = (req,res)=>{
     res.render("admin/pages/dashboard",{
-        text: "ĐAY LÀ TEXT TỪ CONTROLLER"
+        title: "dasboard",
+        text: "đay là dashboard",
+   
     });
 }

@@ -1,6 +1,6 @@
 const express = require("express");
 const database = require("./config/database");
-require('dotenv').config();
+const systemdata = require("./config/system")
 require('dotenv').config();
 
 database.connect();
@@ -11,7 +11,7 @@ app.use(express.static("public"));
 const port = process.env.PORT;
 app.set('views','views');//set views ở file view
 app.set('view engine', "pug");//set engine 
-
+app.locals.admin = systemdata.PathAdmin
 routeclient(app)
 routeadmin(app)
 
