@@ -1,3 +1,4 @@
+//Get /products
 const Product = require("../../model/products.model")
 module.exports.index = async(req,res)=>{
     console.log("kết nối với /products/");
