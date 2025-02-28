@@ -18,3 +18,18 @@ buttonStatus.forEach(button => {
         window.location.href = url.href
     });
 });
+
+const formSearch  = document.querySelector("#form-search")
+if(formSearch){
+    let url = new URL(window.location.href);
+    formSearch.addEventListener("submit",(e) =>{
+        e.preventDefault(); //xóa sự kiện mặc định
+        const keyword = e.target.elements.keyword.value;
+        if (keyword) {
+            url.searchParams.set("keyword", keyword);
+        } else {
+            url.searchParams.delete("keyword");
+        }
+        window.location.href = url.href
+    });
+}
