@@ -1,0 +1,14 @@
+mixin Paginattion(Pagination)
+    nav
+       ul(class="pagination")
+           if(Pagination.currentPage > 1)
+               li(class="page-item")
+               button(class="page-link" buttonPagination=Pagination.currentPage-1) Trang trước
+
+           - for (let i = 1; i <= Pagination.pages; i++)
+               li(class=`page-item ${Pagination.currentPage == i ? "active": ""}`)
+               button(class=`page-link` buttonPagination=i) #{i}
+
+           if(Pagination.currentPage < Pagination.pages)
+               li(class="page-item")
+               button(class="page-link"  buttonPagination=Pagination.currentPage + 1) Kế tiếp

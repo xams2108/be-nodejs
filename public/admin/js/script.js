@@ -33,3 +33,20 @@ if(formSearch){
         window.location.href = url.href
     });
 }
+
+const buttonPaginations = document.querySelectorAll("[buttonPagination]")
+buttonPaginations.forEach(button => {
+    button.addEventListener("click", () => {
+    
+        const numPage = button.getAttribute("buttonPagination");
+
+        if (numPage) {
+            url.searchParams.set("page", numPage);
+        } else {
+            url.searchParams.delete("page");
+        }
+
+
+        window.location.href = url.href
+    });
+}); 
