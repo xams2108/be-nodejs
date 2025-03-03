@@ -90,20 +90,31 @@ if(formChangeMulti){
     formChangeMulti.addEventListener("submit", (event)=>{
         event.preventDefault();
         const checkBoxMulti = document.querySelector("[checkbox-multi]");
-        
+        const typeChange = event.target.type.value;
+        if(typeChange == "delete"){
+            const isConfirm = confirm("bạn có muốn xóa sản phẩm không");
+            if(!isConfirm){
+                return
+            }
+        }
         const inputChecked = checkBoxMulti.querySelectorAll("input[name='id']:checked");
         if(inputChecked){
             let ids = []
             const inputIds = formChangeMulti.querySelector("input[name='ids']")
             inputChecked.forEach(input =>{
                 id = input.value
-                ids.push(id)
+                if(typeChange == "change-position"){
+                    const position = input.closest("tr").querySelector("input[name='position']").value
+                    ids.push(`${id}-${position}`)
+                }else{
+                    ids.push(id)
+                }
             })
             inputIds.value = ids.join(", ")
             console.log(inputIds.value);
             formChangeMulti.submit();
         }else{
-
+            alert("Hãy chọn 1 dòng dữ liệu")
         }
     })
     

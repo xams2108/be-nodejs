@@ -8,7 +8,8 @@ const productScheme = new mongoose.Schema({
     thumbnail: String,
     status: String, 
     position: Number,
-    deleted: Boolean
+    deleted: Boolean,
+    deletedAt: Date
 });
 
 const  Products = mongoose.model('Products',productScheme,"products");//(tên tự định nghĩa để tái xử dụng trong js)(tên schma định nghĩa kiểu dữ liệu cho document)(Tên collection trong DB)

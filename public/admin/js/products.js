@@ -30,9 +30,14 @@ const formDelete = document.querySelector("#form-delete-product")
         buttonsDelete.forEach(button =>{
             button.addEventListener("click", ()=>{
                 const deleteid = button.getAttribute("deleted-id")
-                const pathDelete = path+`/${deleteid}?_method=PATCH`
-                formDelete.action = pathDelete
-                formDelete.submit()
+                const isconfirm = confirm("Bạn có muốn sản phẩm  phẩm này không")
+                if(isconfirm){
+                    const pathDelete = path+`/${deleteid}?_method=DELETE`
+                    formDelete.action = pathDelete
+                    formDelete.submit()
+                }else{
+
+                }
 
             })
         })
