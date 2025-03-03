@@ -21,3 +21,20 @@ if(buttonChangeStatus){
         })
     })
 }
+//Button delete
+const formDelete = document.querySelector("#form-delete-product")
+    if(formDelete){
+        const buttonsDelete = document.querySelectorAll("[button-delete]")
+        const path = formDelete.getAttribute("path")
+        
+        buttonsDelete.forEach(button =>{
+            button.addEventListener("click", ()=>{
+                const deleteid = button.getAttribute("deleted-id")
+                const pathDelete = path+`/${deleteid}?_method=PATCH`
+                formDelete.action = pathDelete
+                formDelete.submit()
+
+            })
+        })
+    }
+//Button delete end 
