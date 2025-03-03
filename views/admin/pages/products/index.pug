@@ -3,9 +3,11 @@ include ../../mixins/filterStatus.pug
 include ../../mixins/formSearch.pug
 include ../../mixins/pagination.pug
 include ../../mixins/formChangeMulti
+include ../../mixins/alertSuccess
 block main 
     h1= text
 
+    +alertSuccess(5000)
     .card.mb-3
         .card-header <h3> Bộ lọc và Tìm kiếm</h3> 
         .card-body

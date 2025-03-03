@@ -121,5 +121,16 @@ if(formChangeMulti){
 }
 //Form change multi end
 
-
+//alert cập nhật thông tin
+const showalert = document.querySelector("[show-alert]");
+if(showalert){
+    const time = parseInt(showalert.getAttribute("data-time"));
+    const closeAlert = showalert.querySelector("[close-alert]");
+    setTimeout(()=>{
+        showalert.classList.add("alert-hidden")
+    },time)
+    closeAlert.addEventListener("click",()=>{
+        showalert.classList.add("alert-hidden")
+    });
+}
 
