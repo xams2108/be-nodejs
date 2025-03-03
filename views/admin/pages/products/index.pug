@@ -2,6 +2,7 @@ extends ../../layouts/default.pug
 include ../../mixins/filterStatus.pug
 include ../../mixins/formSearch.pug
 include ../../mixins/pagination.pug
+include ../../mixins/formChangeMulti
 block main 
     h1= text
 
@@ -10,56 +11,63 @@ block main
         .card-body
             .row
                 .col-6.d-flex
-                    +filterSatus(filterSatus)
+                    +filterStatus(filterSatus)
                 .col-6
                     +formSearch(keyword)
 
     .card.mb-3
         .card-header <h3>Danh sách sản phẩm</h3> 
         .card-body
-            table(class="table table-bordered")
-                thead
-                    tr
-                        th STT
-                        th Hình ảnh
-                        th Tiêu đề
-                        th Giá
-                        th Trạng thái
-                        th Hành động
-                tbody
-                    each item, index in products
-                        tr
-                            td= index +((Pagination.currentPage - 1) * Pagination.limitItem) +1
-                            td
-                                img(src=item.thumbnail alt=item.title width="100px" height="auto")
-                            td= item.title
-                            td #{item.price}$
-                            td
-                                if item.status === "active"
-                                    a(
-                                        href="javascript:;"
-                                        data-status="active"
-                                        button-change-status
-                                        data-id=item.id
-                                        class="badge badge-success"
-                                    ) Hoạt động
-                                else
-                                    a(
-                                        href="javascript:;"
-                                        data-status="inactive"
-                                        button-change-status
-                                        data-id=item.id
-                                        class="badge badge-danger"
-                                    ) Dừng Hoạt động
-                            td
-                                button(class="btn btn-warning btn-sm") Sửa
-                                button(class="btn btn-danger btn-sm ml-1") Xóa  
-    +Paginattion(Pagination)
-    form(
-        action="" 
-        method="POST"
-        id="form-change-status"
-        path= `/${admin}/products/change-status`
-        ) 
+            .card-body
+            +formChangeMulti("products")
 
-    script(src="/admin/js/products.js")
+            table(class="table table-hover table-sm table-bordered table-striped" checkbox-multi)
+                        thead
+                            tr  
+                                th 
+                                    input( type="checkbox" name="checkall")
+                                th STT
+                                th Hình ảnh
+                                th Tiêu đề
+                                th Giá
+                                th Trạng thái
+                                th Hành động
+                        tbody
+                            each item, index in products
+                                tr
+                                    td 
+                                        input( type="checkbox" name="id" value=item.id)
+                                    td= index +((Pagination.currentPage - 1) * Pagination.limitItem) +1
+                                    td
+                                        img(src=item.thumbnail alt=item.title width="100px" height="auto")
+                                    td= item.title
+                                    td #{item.price}$
+                                    td
+                                        if item.status === "active"
+                                            a(
+                                                href="javascript:;"
+                                                data-status="active"
+                                                button-change-status
+                                                data-id=item.id
+                                                class="badge badge-success"
+                                            ) Hoạt động
+                                        else
+                                            a(
+                                                href="javascript:;"
+                                                data-status="inactive"
+                                                button-change-status
+                                                data-id=item.id
+                                                class="badge badge-danger"
+                                            ) Dừng Hoạt động
+                                    td
+                                        button(class="btn btn-warning btn-sm") Sửa
+                                        button(class="btn btn-danger btn-sm ml-1") Xóa  
+            +Pagination(Pagination)
+            form(
+                action="" 
+                method="POST"
+                id="form-change-status"
+                path= `/${admin}/products/change-status`
+                ) 
+
+            script(src="/admin/js/products.js")

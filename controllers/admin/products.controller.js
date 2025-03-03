@@ -26,7 +26,7 @@ module.exports.index = async (req,res)=>{
 
     //Pagination
     const ObjectPagination =  await pagination(req.query, find,5);
-    
+    const indexItem = await Products.countDocuments(find);
     const products = await Products.find(find).limit(ObjectPagination.limitItem).skip((ObjectPagination.currentPage-1)*ObjectPagination.limitItem);
 
    
@@ -36,10 +36,11 @@ module.exports.index = async (req,res)=>{
         products: products,
         filterStatus: filterStatus,
         keyword: ObjectSearch.keyword,
-        Pagination : ObjectPagination
+        Pagination : ObjectPagination,
+        indexItem : indexItem
     });
 }
-//Get /admin/products/change-status
+//PATCH /admin/products/change-status
 module.exports.changStatus  = async(req,res) =>{
     const status = req.params.status;
     const id = req.params.id;
@@ -48,4 +49,13 @@ module.exports.changStatus  = async(req,res) =>{
     });
     res.redirect("back");
     
+}
+
+
+//PATCH /admin/products/change-multi
+module.exports.changMulti = async(req, res) =>{
+    const status = req.body.type;
+    const ids = req.body.ids.split(",").map(id => id.trim());
+    await Products.updateMany({ _id: { $in: ids } }, { $set: { status: status } });
+    res.redirect("back");
 }
