@@ -21,8 +21,11 @@ block main
         .card-header <h3>Danh sách sản phẩm</h3> 
         .card-body
             .card-body
-            +formChangeMulti("products")
-
+            .row
+                .col8
+                    +formChangeMulti(`/${admin}/products/change-multi?_method=PATCH`)
+                .col4
+                    a(href=`/${admin}/products/create` class="btn btn-outline-success") + Thêm mới
             table(class="table table-hover table-sm table-bordered table-striped" checkbox-multi)
                         thead
                             tr  

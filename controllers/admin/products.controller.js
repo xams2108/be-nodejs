@@ -3,6 +3,7 @@ const Products = require("../../model/products.model")
 const FilterStatus =  require("../../helper/filterStatus")
 const search =  require("../../helper/search.js")
 const pagination = require("../../helper/pagination.js")
+const systemConfig = require("../../config/system")
 //Get /admin/products
 module.exports.index = async (req,res)=>{
     const find = {
@@ -26,8 +27,7 @@ module.exports.index = async (req,res)=>{
 
     //Pagination
     const ObjectPagination =  await pagination(req.query, find,5);
-    const indexItem = await Products.countDocuments(find).sort({position: "desc"}); //desc sắp xếp theo giảm dần //asc sắp xếp tăng dần
-    const products = await Products.find(find).limit(ObjectPagination.limitItem).skip((ObjectPagination.currentPage-1)*ObjectPagination.limitItem);
+    const products = await Products.find(find).sort({position: "desc"}).limit(ObjectPagination.limitItem).skip((ObjectPagination.currentPage-1)*ObjectPagination.limitItem);
 
    
     res.render("admin/pages/products/index.pug",{
@@ -37,7 +37,6 @@ module.exports.index = async (req,res)=>{
         filterStatus: filterStatus,
         keyword: ObjectSearch.keyword,
         Pagination : ObjectPagination,
-        indexItem : indexItem
     });
 }
 //PATCH /admin/products/change-status
@@ -65,7 +64,7 @@ module.exports.changeMulti = async(req, res) =>{
             break;
         case "inactive":
             await Products.updateMany({ _id: { $in: ids } }, { $set: { status: type } });
-            req.flash("success", `Cập nhật trạng thái ${ids.length}sản phẩm đã thành công`)
+            req.flash("success", `Cập nhật trạng thái ${ids.length} sản phẩm đã thành công`)
             break;
         case "delete":
             await Products.updateMany({_id: {$in:ids}}, {deleted: true, deletedAt: new Date()})
@@ -97,4 +96,26 @@ module.exports.delete = async(req,res) =>{
 
 }
 
-//PATCH /admin/products/delete
+//GET /admin/products/create
+module.exports.create = (req,res) =>{
+    res.render("admin/pages/products/create",{
+        
+    })
+}
+
+//POST /admin/products/create
+module.exports.createPOST = async(req,res) =>{
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
+    if(req.body.position == ""){
+        const count = await Products.countDocuments();
+        req.body.position = count+1;
+    }else{
+        req.body.position = parseInt(req.body.position);
+    }
+    const product = new Products(req.body)
+    await product.save()
+    req.flash("success", "Đã thêm 1 sản phẩm thành công")
+    res.redirect(`/${systemConfig.PathAdmin}/products`)
+}
