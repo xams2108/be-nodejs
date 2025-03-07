@@ -4,6 +4,8 @@ const FilterStatus =  require("../../helper/filterStatus")
 const search =  require("../../helper/search.js")
 const pagination = require("../../helper/pagination.js")
 const systemConfig = require("../../config/system")
+
+
 //Get /admin/products
 module.exports.index = async (req,res)=>{
     const find = {
@@ -28,8 +30,6 @@ module.exports.index = async (req,res)=>{
     //Pagination
     const ObjectPagination =  await pagination(req.query, find,5);
     const products = await Products.find(find).sort({position: "desc"}).limit(ObjectPagination.limitItem).skip((ObjectPagination.currentPage-1)*ObjectPagination.limitItem);
-
-   
     res.render("admin/pages/products/index.pug",{
         title: "products",
         text: "Danh sach sản phẩm",
@@ -108,6 +108,8 @@ module.exports.createPOST = async(req,res) =>{
     req.body.price = parseInt(req.body.price);
     req.body.discountPercentage = parseInt(req.body.discountPercentage);
     req.body.stock = parseInt(req.body.stock);
+    req.body.thumbnail = `uploads/${req.file.filename}`;
+    console.log(req.file)
     if(req.body.position == ""){
         const count = await Products.countDocuments();
         req.body.position = count+1;
@@ -116,6 +118,5 @@ module.exports.createPOST = async(req,res) =>{
     }
     const product = new Products(req.body)
     await product.save()
-    req.flash("success", "Đã thêm 1 sản phẩm thành công")
     res.redirect(`/${systemConfig.PathAdmin}/products`)
 }

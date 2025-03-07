@@ -45,7 +45,7 @@ block main
                                         input( type="checkbox" name="id" value=item.id)
                                     td= index +((Pagination.currentPage - 1) * Pagination.limitItem) +1
                                     td
-                                        img(src=item.thumbnail alt=item.title width="100px" height="auto")
+                                        img(src=(item.thumbnail.startsWith("http") ? item.thumbnail : '/' + item.thumbnail) alt=item.title width="100px" height="auto")
                                     td= item.title
                                     td #{item.price}$
                                     td

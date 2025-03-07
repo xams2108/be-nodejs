@@ -20,7 +20,6 @@ const productScheme = new mongoose.Schema({
     slug: {
         type: String,
         slug: "title", //lấy giá trị title của sản phẩm để hiển thị trên url
-        unique: true
     },
     deletedAt: Date
 },{
