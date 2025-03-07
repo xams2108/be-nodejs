@@ -6,7 +6,7 @@ module.exports = () => {
         },
         filename: function (req, file, cb) {
             const uniqueSuffix = Date.now();
-            cb(null, `${uniqueSuffix}-${file.originalname}`);
+            cb(null, `/${uniqueSuffix}-${file.originalname}`);
         }
     });
 
