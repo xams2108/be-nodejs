@@ -134,3 +134,17 @@ if(showalert){
     });
 }
 
+//Upload image
+const uploadImg = document.querySelector("[uploadImage]")
+if(uploadImg){
+    const inputImg = document.querySelector("[upload-img-input]")
+    const previewImg = document.querySelector("[upload-img-preview]")
+    inputImg.addEventListener("change", (event) =>{
+        const file = event.target.files[0]
+        if(file){
+          
+            previewImg.src = URL.createObjectURL(file)
+            console.log(previewImg.src)
+        }
+    })
+}
