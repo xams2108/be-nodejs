@@ -5,7 +5,7 @@ let url = new URL(window.location.href);
 
 buttonStatus.forEach(button => {
     button.addEventListener("click", () => {
-    
+
         const status = button.getAttribute("button-status");
 
         if (status) {
@@ -19,10 +19,10 @@ buttonStatus.forEach(button => {
     });
 });
 
-const formSearch  = document.querySelector("#form-search")
-if(formSearch){
+const formSearch = document.querySelector("#form-search")
+if (formSearch) {
     let url = new URL(window.location.href);
-    formSearch.addEventListener("submit",(e) =>{
+    formSearch.addEventListener("submit", (e) => {
         e.preventDefault(); //xóa sự kiện mặc định
         const keyword = e.target.elements.keyword.value;
         if (keyword) {
@@ -37,7 +37,7 @@ if(formSearch){
 const buttonPaginations = document.querySelectorAll("[buttonPagination]")
 buttonPaginations.forEach(button => {
     button.addEventListener("click", () => {
-    
+
         const numPage = button.getAttribute("buttonPagination");
 
         if (numPage) {
@@ -49,31 +49,30 @@ buttonPaginations.forEach(button => {
 
         window.location.href = url.href
     });
-}); 
+});
 
 //CheckBox Multi
 const checkBoxMulti = document.querySelector("[checkbox-multi]");
-if(checkBoxMulti){
+if (checkBoxMulti) {
     const inputCheckAll = checkBoxMulti.querySelector("input[name='checkall']")
     const inputsId = checkBoxMulti.querySelectorAll("input[name='id']")
-    inputCheckAll.addEventListener("click",()=>{
-        if(inputCheckAll.checked)
-        {
+    inputCheckAll.addEventListener("click", () => {
+        if (inputCheckAll.checked) {
             inputsId.forEach(input => {
                 input.checked = true
             })
-        }else{
+        } else {
             inputsId.forEach(input => {
                 input.checked = false
             })
-        }   
+        }
     })
     inputsId.forEach(item => {
-        item.addEventListener("click", () =>{
+        item.addEventListener("click", () => {
             const countchecked = checkBoxMulti.querySelectorAll("input[name='id']:checked")
-            if(countchecked == inputsId.length){
+            if (countchecked == inputsId.length) {
                 inputCheckAll.checked = true;
-            }else{
+            } else {
                 inputCheckAll.checked = false;
             }
 
@@ -86,65 +85,70 @@ if(checkBoxMulti){
 
 //Form change multi
 const formChangeMulti = document.querySelector("#form-change-multi")
-if(formChangeMulti){
-    formChangeMulti.addEventListener("submit", (event)=>{
+if (formChangeMulti) {
+    formChangeMulti.addEventListener("submit", (event) => {
         event.preventDefault();
         const checkBoxMulti = document.querySelector("[checkbox-multi]");
         const typeChange = event.target.type.value;
-        if(typeChange == "delete"){
+        if (typeChange == "delete") {
             const isConfirm = confirm("bạn có muốn xóa sản phẩm không");
-            if(!isConfirm){
+            if (!isConfirm) {
                 return
             }
         }
         const inputChecked = checkBoxMulti.querySelectorAll("input[name='id']:checked");
-        if(inputChecked){
+        if (inputChecked) {
             let ids = []
             const inputIds = formChangeMulti.querySelector("input[name='ids']")
-            inputChecked.forEach(input =>{
+            inputChecked.forEach(input => {
                 id = input.value
-                if(typeChange == "change-position"){
+                if (typeChange == "change-position") {
                     const position = input.closest("tr").querySelector("input[name='position']").value
                     ids.push(`${id}-${position}`)
-                }else{
+                } else {
                     ids.push(id)
                 }
             })
             inputIds.value = ids.join(", ")
             console.log(inputIds.value);
             formChangeMulti.submit();
-        }else{
+        } else {
             alert("Hãy chọn 1 dòng dữ liệu")
         }
     })
-    
+
 }
 //Form change multi end
 
 //alert cập nhật thông tin
 const showalert = document.querySelector("[show-alert]");
-if(showalert){
+if (showalert) {
     const time = parseInt(showalert.getAttribute("data-time"));
     const closeAlert = showalert.querySelector("[close-alert]");
-    setTimeout(()=>{
+    setTimeout(() => {
         showalert.classList.add("alert-hidden")
-    },time)
-    closeAlert.addEventListener("click",()=>{
+    }, time)
+    closeAlert.addEventListener("click", () => {
         showalert.classList.add("alert-hidden")
     });
 }
 
 //Upload image
 const uploadImg = document.querySelector("[uploadImage]")
-if(uploadImg){
+if (uploadImg) {
     const inputImg = document.querySelector("[upload-img-input]")
     const previewImg = document.querySelector("[upload-img-preview]")
-    inputImg.addEventListener("change", (event) =>{
+    const closeButton = document.querySelector("[button-close]")
+    inputImg.addEventListener("change", (event) => {
         const file = event.target.files[0]
-        if(file){
-          
+        if (file) {
             previewImg.src = URL.createObjectURL(file)
-            console.log(previewImg.src)
+            closeButton.classList.remove("d-none");
         }
+    })
+    closeButton.addEventListener("click", () => {
+        closeButton.classList.add("d-none");
+        previewImg.src = "";
+        inputImg.value = "";
     })
 }

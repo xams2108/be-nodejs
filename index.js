@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 //flash
 app.use(cookieParser('keyboard cat'));//key ở đay là dùng để bảo mật
-app.use(session({ cookie: { maxAge: 60000 }}));
+app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(flash());
 //flash end
 app.use(express.static("public"));
@@ -31,13 +31,13 @@ routeclient(app)
 routeadmin(app)
 
 const port = process.env.PORT;
-app.set('views','views');//set views ở file view
+app.set('views', 'views');//set views ở file view
 app.set('view engine', "pug");//set engine s
 
 
 app.locals.admin = systemdata.PathAdmin
 
 
-app.listen(port,() =>{
+app.listen(port, () => {
     console.log(`Project opening on port:${port}`)
 })
