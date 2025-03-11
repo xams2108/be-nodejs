@@ -74,7 +74,7 @@ block main
                                                 class="badge badge-danger"
                                             ) Dừng Hoạt động
                                     td
-                                        button(class="btn btn-warning btn-sm") Sửa
+                                        a(href=`/products/edit/${item.id}` class="btn btn-warning btn-sm") Sửa 
                                         button(class="btn btn-danger btn-sm ml-1" button-delete deleted-id=item.id) Xóa  
             +Pagination(Pagination)
             form(
@@ -88,6 +88,6 @@ block main
                 method="POST"
                 id="form-delete-product"
                 path= `/${admin}/products/delete`
-            ) 
+            )
 
             script(src="/admin/js/products.js")

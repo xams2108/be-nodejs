@@ -4,7 +4,7 @@ const FilterStatus = require("../../helper/filterStatus")
 const search = require("../../helper/search.js")
 const pagination = require("../../helper/pagination.js")
 const systemConfig = require("../../config/system")
-
+const mongoose = require("mongoose");
 
 //Get /admin/products
 module.exports.index = async (req, res) => {
@@ -121,4 +121,38 @@ module.exports.createPOST = async (req, res) => {
     const product = new Products(req.body)
     await product.save()
     res.redirect(`/${systemConfig.PathAdmin}/products`)
+}
+//GET admin/pages/products/edit
+module.exports.edit = async (req, res) => {
+    const find = {
+        deleted: false,
+        _id: req.params.id
+    }
+    const product = await Products.findOne(find)
+    console.log(product)
+    res.render("admin/pages/products/edit", {
+        product: product
+    })
+
+}
+//PATCH admin/pages/products/edit
+module.exports.editPatch = async (req, res) => {
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
+    req.body.position = parseInt(req.body.position)
+
+    if (req.file) {
+        req.body.thumbnail = `/uploads/${req.file.filename}`;
+    }
+    try {
+        await Products.updateOne({ _id: req.params.id }, req.body)
+        req.flash("success", "Cập nhật thành công")
+
+    } catch (error) {
+        req.flash("error", "Cập nhật thất bại")
+    }
+
+    res.redirect(`/${systemConfig.PathAdmin}/products`)
+
 }
