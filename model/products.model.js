@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const slug = require("mongoose-slug-updater")
 const { v4: uuidv4 } = require('uuid');
-mongoose.plugin(slug)
+mongoose.plugin(slug);
 const productScheme = new mongoose.Schema({
-    _id: { type: String, default: () => uuidv4().replace(/-/g, '') },
+    _id: { type: String, default: () => uuidv4().replace(/-/g, '') + Date.now() },
     title: String,
     description: String,
     price: Number,
@@ -22,6 +22,7 @@ const productScheme = new mongoose.Schema({
     slug: {
         type: String,
         slug: "title", //lấy giá trị title của sản phẩm để hiển thị trên url
+        unique: true
     },
     deletedAt: Date
 }, {

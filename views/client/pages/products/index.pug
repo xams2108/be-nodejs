@@ -8,12 +8,15 @@ block main
                 +box-head("Danh mục sản phẩm")
         .row
             each item in products
+                 
                 .col-4.mb-3
                     .product-item
                         .inner-image
                             img(src=item.thumbnail)
                         .inner-content
-                            h3.inner-title #{item.title}
+                        
+                            h3.inner-title
+                                a(href=`/products/detail/${item.slug}`) #{item.title}
                             .inner-price-new #{item.pricenew}
                             .inner-price-old #{item.discountPercentage}
                             .inner-discount #{item.discountPercentage}
