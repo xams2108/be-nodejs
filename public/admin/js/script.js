@@ -152,3 +152,37 @@ if (uploadImg) {
         inputImg.value = "";
     })
 }
+
+//SORTKEY
+const sort = document.querySelector("[sort]");
+if (sort) {
+    const url = new URL(window.location.href);
+    const sortSelect = document.querySelector("[sort-select]");
+    const sortClear = document.querySelector("[sort-clear]")
+    sortSelect.addEventListener("change", (event) => {
+        const [sortkey, sortvalue] = event.target.value.split("-");
+        url.searchParams.set("sortkey", sortkey);
+        url.searchParams.set("sortvalue", sortvalue);
+
+        window.location.href = url.toString();
+    });
+    sortClear.addEventListener("click", () => {
+        url.searchParams.delete("sortkey");
+        url.searchParams.delete("sortvalue");
+        window.location.href = url.toString();
+    })
+    const sortkey = url.searchParams.get("sortkey");
+    const sortvalue = url.searchParams.get("sortvalue");
+    if (sortkey && sortvalue) {
+        const valueOption = sortkey + "-" + sortvalue
+        const opptions = sortSelect.querySelectorAll("option")
+        opptions.forEach(option => {
+            if (option.value == valueOption) {
+                option.selected = true;
+            }
+        });
+    }
+
+}
+
+//SORTKEYEND

@@ -25,11 +25,17 @@ module.exports.index = async (req, res) => {
         find.title = ObjectSearch.regex;
     }
 
+    let sort = {}
+    if (req.query.sortkey && req.query.sortvalue) {
+        sort[req.query.sortkey] = req.query.sortvalue
+    } else {
+        sort.position = "desc"
+    }
 
 
     //Pagination
     const ObjectPagination = await pagination(req.query, find, 5);
-    const products = await Products.find(find).sort({ position: "desc" }).limit(ObjectPagination.limitItem).skip((ObjectPagination.currentPage - 1) * ObjectPagination.limitItem);
+    const products = await Products.find(find).sort(sort).limit(ObjectPagination.limitItem).skip((ObjectPagination.currentPage - 1) * ObjectPagination.limitItem);
     res.render("admin/pages/products/index.pug", {
         title: "products",
         text: "Danh sach sản phẩm",
