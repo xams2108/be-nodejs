@@ -155,3 +155,15 @@ module.exports.editPatch = async (req, res) => {
     res.redirect(`/${systemConfig.PathAdmin}/products`)
 
 }
+
+//GET admin/pages/product/detail
+module.exports.detail = async (req, res) => {
+    const find = {
+        deleted: false,
+        _id: req.params.id
+    }
+    const product = await Products.findOne(find)
+    res.render("admin/pages/products/detail", {
+        product: product
+    })
+}
