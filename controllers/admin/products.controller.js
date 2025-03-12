@@ -129,7 +129,6 @@ module.exports.edit = async (req, res) => {
         _id: req.params.id
     }
     const product = await Products.findOne(find)
-    console.log(product)
     res.render("admin/pages/products/edit", {
         product: product
     })
