@@ -4,16 +4,17 @@ const methodOverride = require("method-override");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const multer = require("multer");
-
+const path = require("path")
 const bodyParser = require('body-parser');
 const database = require("./config/database");
 const systemdata = require("./config/system");
+
 require('dotenv').config();
 
 
 database.connect();
 const app = express();
-
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 app.use(methodOverride('_method'))
 
 app.use(bodyParser.urlencoded({ extended: false }))
