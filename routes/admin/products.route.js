@@ -23,7 +23,7 @@ router.get("/edit/:id", controller.edit)
 router.patch("/edit/:id",
     upload.single("thumbnail"),
     productValidate.createPost,
-    upFileCloudMiddleWare.uploadToCloudinary,
+    upFileCloudMiddleWare.uploadToCloudinary("products"),
     controller.editPatch
 );
 

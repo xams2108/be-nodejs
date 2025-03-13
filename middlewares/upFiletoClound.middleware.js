@@ -9,7 +9,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-module.exports.uploadToCloudinary = async (req, res, next) => {
+module.exports.uploadToCloudinary = (folder)  => async (req, res, next) => {
     try {
         if (!req.file) {
             return next();
@@ -20,14 +20,14 @@ module.exports.uploadToCloudinary = async (req, res, next) => {
         }
 
         const stream = cloudinary.uploader.upload_stream(
-            { folder: "products" }, // 📌 Ảnh được lưu trong thư mục "products" trên Cloudinary
+            { folder: folder }, // 📌 Ảnh được lưu trong thư mục "products" trên Cloudinary
             (error, result) => {
                 if (error) {
                     console.error("Lỗi Cloudinary:", error);
                     return res.status(500).json({ error: "Lỗi upload ảnh lên Cloudinary!" });
                 }
 
-            
+
                 req.body[req.file.fieldname] = result.secure_url;
                 next();
             }

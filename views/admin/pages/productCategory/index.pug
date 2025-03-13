@@ -1,0 +1,71 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert
+
+block main
+  +alertError(5000)
+  
+  h1.mb-4 Thêm mới sản phẩm
+  
+  form(
+    action=`/${admin}/products-category/create`
+    id="form-create-product"
+    method="GET"
+    enctype="multipart/form-data"
+  )
+    .form-group
+      button.btn.btn-primary(type="submit") Tạo mới
+  
+  table.table.table-hover.table-sm.table-bordered.table-striped(checkbox-multi)
+    thead
+      tr
+        th
+          input(type="checkbox" name="checkall")
+        th STT
+        th Hình ảnh
+        th Tiêu đề
+        th Vị trí
+        th Trạng thái
+        th Hành động
+    tbody
+      each item, index in recors
+        tr
+          td
+            input(type="checkbox" name="id" value=item.id)
+          td= index + 1
+          td
+            img(src=`${item.thumbnail}` alt=item.title width="100px" height="auto")
+          td= item.title
+          td
+            input(
+              type="number"
+              value=item.position
+              style="width: 60px"
+              min="1"
+              name="position"
+            )
+          td
+            if item.status === "active"
+              a(
+                href="javascript:;"
+                data-status="active"
+                button-change-status
+                data-id=item.id
+                class="badge badge-success"
+              ) Hoạt động
+            else
+              a(
+                href="javascript:;"
+                data-status="inactive"
+                button-change-status
+                data-id=item.id
+                class="badge badge-danger"
+              ) Dừng Hoạt động
+          td
+            a.btn.btn-secondary.btn-sm(href=`/${admin}/products/detail/${item.id}`) Chi tiết
+            a.btn.btn-warning.btn-sm(href=`/${admin}/products/edit/${item.id}`) Sửa
+            button.btn.btn-danger.btn-sm.ml-1(
+              button-delete
+              deleted-id=item.id
+            ) Xóa
+  
+  
