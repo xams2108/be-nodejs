@@ -1,7 +1,9 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert
+include ../../mixins/tree
 block main
   +alertError(5000)
+
   h1(class="mb-4") Tạo danh mục
   form(
     action=`/${admin}/products-category/create`
@@ -18,16 +20,11 @@ block main
         name="title"
         
       )
-      
-    div(class="form-group")
-      label(for="parenid") danh mục da
-      input(
-        type="text"
-        class="form-control"
-        id="parenid"
-        name="parenid"
+    select(name="parent_id" id="parent_id" class="form-control")
+      option(value="") -- Chọn danh mục cha --
+      if recors
+          +tree(recors)
         
-     )
     div(class="form-group ")
       label(for="desc") Mô tả
       textarea(

@@ -10,7 +10,7 @@ const upload = multer()
 
 
 router.get("/", controller.index)
-
+router.patch("/change-multi", controller.changeMulti)
 router.get("/create", controller.create)
 
 router.post("/create",

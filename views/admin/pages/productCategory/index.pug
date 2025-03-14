@@ -1,11 +1,22 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert
+include ../../mixins/formChangeMulti
+include ../../mixins/pagination
+include ../../mixins/filterStatus
+include ../../mixins/formSearch
 
 block main
   +alertError(5000)
-  
-  h1.mb-4 Thêm mới sản phẩm
-  
+  h1.mb-4 Danh mục sản phẩm
+  .card.mb-3
+        .card-header <h3> Bộ lọc và Tìm kiếm</h3> 
+        .card-body
+            .row
+                .col-6.d-flex
+                    +filterStatus(filterSatus)
+                .col-6
+                    +formSearch(keyword)
+  +formChangeMulti(`/${admin}/products-category/change-multi?_method=PATCH`)
   form(
     action=`/${admin}/products-category/create`
     id="form-create-product"
@@ -67,5 +78,4 @@ block main
               button-delete
               deleted-id=item.id
             ) Xóa
-  
   

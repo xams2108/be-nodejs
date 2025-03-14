@@ -34,7 +34,7 @@ module.exports.index = async (req, res) => {
 
 
     //Pagination
-    const ObjectPagination = await pagination(req.query, find, 5);
+    const ObjectPagination = await pagination(req.query, find, 5, "products");
     const products = await Products.find(find).sort(sort).limit(ObjectPagination.limitItem).skip((ObjectPagination.currentPage - 1) * ObjectPagination.limitItem);
     res.render("admin/pages/products/index.pug", {
         title: "products",

@@ -1,15 +1,15 @@
-const Products = require("../model/products.model")
-module.exports = async(query, find, numIteminPage) => {
+module.exports = async (query, find, numIteminPage, model) => {
+    const items = require(`../model/${model}.model`)
     const ObjectPagination = {
         currentPage: 1,
         limitItem: numIteminPage,
-        
+
     }
-    if(query.page){
+    if (query.page) {
         ObjectPagination.currentPage = parseInt(query.page);
 
     }
-    const countProduct = await Products.countDocuments(find)
+    const countProduct = await items.countDocuments(find)
     ObjectPagination.pages = (Math.ceil(countProduct / ObjectPagination.limitItem))
     return ObjectPagination;
 }
