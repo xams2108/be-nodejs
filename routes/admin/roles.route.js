@@ -13,5 +13,8 @@ router.get("/edit/:id", controller.edit)
 router.patch("/edit/:id", controller.editPATCH)
 
 //DETAIL
+router.get("/detail/:id", controller.detail)
 
+//DELETE
+router.patch("/delete/:id", controller.delete)
 module.exports = router

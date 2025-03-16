@@ -27,9 +27,10 @@ block main
                                 td #{item.title}
                                 td #{item.description}
                                 td
-                                    a(class="btn btn-secondary btn-sm" href=`/${admin}/roles/detail/${item.id}`) Chi tiết
-                                    a(class="btn btn-warning btn-sm ml-1" href=`/${admin}/roles/edit/${item.id}`) Sửa
-                                    button(class="btn btn-danger btn-sm ml-1") Xóa
+                                    form(action=`/${admin}/roles/delete/${item.id}?_method=PATCH` method="POST") 
+                                        a(class="btn btn-secondary btn-sm" href=`/${admin}/roles/detail/${item.id}`) Chi tiết
+                                        a(class="btn btn-warning btn-sm ml-1" href=`/${admin}/roles/edit/${item.id}`) Sửa
+                                        button(class="btn btn-danger btn-sm ml-1" type="submit") Xóa
                     else
                         tr
                             td(colspan="4" class="text-center") Chưa có nhóm quyền nào được tạo.

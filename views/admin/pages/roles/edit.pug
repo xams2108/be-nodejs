@@ -1,5 +1,7 @@
 extends ../../layouts/default
+include ../../mixins/alert
 block main
+    +alertSuccess(5000)
     form(action=`/${admin}/roles/edit/${role.id}?_method=PATCH` method="POST")
         div(class="form-group")
             label(for="title") Tiêu đề
