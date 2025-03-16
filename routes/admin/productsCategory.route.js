@@ -33,6 +33,8 @@ router.patch("/edit/:id",
 //DETAIL
 router.get("/detail/:id", controller.detail)
 
+//DELETED
+router.patch("/delete/:id", controller.delete)
 
 module.exports = router
 

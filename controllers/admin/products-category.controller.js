@@ -139,3 +139,12 @@ module.exports.detail = async (req, res) => {
         item: item
     })
 }
+
+module.exports.delete = async (req, res) => {
+    const find = {
+        deleted: false,
+        _id: req.params.id
+    }
+    await ProductCategory.updateOne({ _id: req.params.id }, { $set: { deleted: true } })
+    res.redirect("back")
+}
