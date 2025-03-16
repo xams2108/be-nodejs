@@ -15,14 +15,14 @@ router.delete("/delete/:id", controller.delete)
 router.get("/create", controller.create)
 router.post("/create",
     upload.single("thumbnail"),
-    productValidate.createPost,
-    upFileCloudMiddleWare.uploadToCloudinary,
+    productValidate.checktitle,
+    upFileCloudMiddleWare.uploadToCloudinary("products"),
     controller.createPOST
 );
 router.get("/edit/:id", controller.edit)
 router.patch("/edit/:id",
     upload.single("thumbnail"),
-    productValidate.createPost,
+    productValidate.checktitle,
     upFileCloudMiddleWare.uploadToCloudinary("products"),
     controller.editPatch
 );

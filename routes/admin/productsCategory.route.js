@@ -11,12 +11,26 @@ const upload = multer()
 
 router.get("/", controller.index)
 router.patch("/change-multi", controller.changeMulti)
-router.get("/create", controller.create)
 
+//CREATE
+router.get("/create", controller.create)
 router.post("/create",
     upload.single("thumbnail"),
-    ProductsCategoryValidate.createPost,
+    ProductsCategoryValidate.checktitle,
     upFileCloudMiddleWare.uploadToCloudinary("ProductCategory"),
     controller.createPOST
 )
+
+//EDIT
+router.get("/edit/:id", controller.edit)
+router.patch("/edit/:id",
+    upload.single("thumbnail"),
+    ProductsCategoryValidate.checktitle,
+    upFileCloudMiddleWare.uploadToCloudinary("ProductCategory"),
+    controller.editPATCH
+)
+
+
+
 module.exports = router
+

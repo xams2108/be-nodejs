@@ -3,6 +3,9 @@ const systemConfig = require("../../config/system")
 const FilterStatus = require("../../helper/filterStatus")
 const Search = require("../../helper/search.js")
 const Pagination = require("../../helper/pagination.js")
+const { TreeHelper } = require("../../helper/createTree")
+const { find } = require("../../model/products.model.js")
+
 //Get admin/pages/productCategory/index
 module.exports.index = async (req, res) => {
 
@@ -42,25 +45,8 @@ module.exports.create = async (req, res) => {
         deleted: false,
     }
 
-    function createtree(arr, parentid = "") {
-        const tree = []
-        arr.forEach(item => {
-            if (item.parent_id === parentid) {
-                const newItem = item
-                const children = createtree(arr, item._id)
-                if (children) {
-                    newItem.children = children
-                }
-                tree.push(newItem)
-            }
-
-        });
-        return tree
-    }
-
     const recor = await ProductCategory.find(find)
-    const newrecor = await createtree(recor)
-    console.log(newrecor)
+    const newrecor = await TreeHelper(recor)
     res.render("admin/pages/productCategory/create-category", {
         recors: newrecor
     })
@@ -68,6 +54,7 @@ module.exports.create = async (req, res) => {
 
 //Post admin/pages/productCategory/create
 module.exports.createPOST = async (req, res) => {
+    console.log(req.body)
     if (req.body.position == "") {
         const count = await ProductCategory.countDocuments();
         req.body.position = count + 1;
@@ -76,9 +63,11 @@ module.exports.createPOST = async (req, res) => {
     }
     const productCategory = new ProductCategory(req.body)
     await productCategory.save()
-    res.redirect(`/${systemConfig.PathAdmin}/products-category`)
-}
 
+    res.redirect(`/${systemConfig.PathAdmin}/products-category`)
+
+}
+//Change Multi
 module.exports.changeMulti = async (req, res) => {
     const type = req.body.type;
     const ids = req.body.ids.split(",").map(id => id.trim());
@@ -108,4 +97,33 @@ module.exports.changeMulti = async (req, res) => {
     }
 
     res.redirect("back");
+}
+
+//GET admin/pages/productCategory/edit
+module.exports.edit = async (req, res) => {
+    const find = {
+        deleted: false
+    }
+    const recor = await ProductCategory.find(find)
+    const category = recor.find((item) =>
+        item._id == req.params.id && item.deleted == false
+    );
+    const newrecor = await TreeHelper(recor)
+    res.render("admin/pages/productCategory/edit-category", {
+        recors: newrecor,
+        category: category
+    })
+}
+
+//PATCH admin/pages/productCategory/edit
+module.exports.editPATCH = async (req, res) => {
+    req.body.position = parseInt(req.body.position)
+    try {
+        await ProductCategory.updateOne({ _id: req.params.id }, req.body)
+        req.flash("success", "Cập nhật thành công")
+
+    } catch (error) {
+        req.flash("error", "Cập nhật thất bại")
+    }
+    res.redirect(`/${systemConfig.PathAdmin}/products-category`)
 }

@@ -1,11 +1,12 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert
+include ../../mixins/tree
 block main
   +alertError(5000)
-  +alertSuccess(5000)
-  h1(class="mb-4") Sửa thông tin sản phẩm
+
+  h1(class="mb-4") Sửa danh mục
   form(
-    action=`/${admin}/products/edit/${product._id}?_method=PATCH`
+    action=`/${admin}/products-category/edit/${category._id}?_method=PATCH`
     id="form-create-product"
     method="POST"
     enctype="multipart/form-data"
@@ -17,51 +18,21 @@ block main
         class="form-control"
         id="title"
         name="title"
-        value= product.title
+        value= category.title
         
       )
-
-    div(class="form-group")
+    select(name="parent_id" id="parent_id" class="form-control")
+        option(value="") -- Chọn danh mục cha --
+        if recors
+          +tree(recors,category.parent_id)
+        
+    div(class="form-group ")
       label(for="desc") Mô tả
       textarea(
         class="form-control textarea-mce"
         id="desc"
         name="description"
         rows="5"
-        
-      ) #{product.description}
-
-    div(class="form-group")
-      label(for="price") Giá
-      input(
-        type="number"
-        class="form-control"
-        id="price"
-        name="price"
-        value= product.price
-        min="0"
-      )
-
-    div(class="form-group")
-      label(for="discount") % Giảm giá
-      input(
-        type="number"
-        class="form-control"
-        id="discount"
-        name="discountPercentage"
-        value= product.discountPercentage
-        min="0"
-      )
-
-    div(class="form-group")
-      label(for="stock") Số lượng
-      input(
-        type="number"
-        class="form-control"
-        id="stock"
-        name="stock"
-        value= product.stock
-        min="0"
       )
 
     div(class="form-group"
@@ -75,11 +46,12 @@ block main
         name="thumbnail"
         accept="image/*"
         upload-img-input
+      
       )
       div(class="position-relative d-inline-block")
         button(class=" btn btn-danger btn-sm position-absolute top-0 end-0 d-none" type="button" button-close) x
         img(
-          src= product.thumbnail
+          src
           upload-img-preview
           class="image-preview"
         )
@@ -93,7 +65,7 @@ block main
         name="position"
         placeholder="Tự động tăng"
         min="1"
-        value= product.position
+        value= category.position
       )
 
     div(class="form-group form-check form-check-inline")
@@ -103,7 +75,8 @@ block main
         id="statusActive"
         name="status"
         value="active"
-        checked= (product.status=="active"? true: false)
+        checked=  category.status=="active"? true: false
+      
       )
       label(for="statusActive" class="form-check-label") Hoạt động
 
@@ -114,7 +87,7 @@ block main
         id="statusInActive"
         name="status"
         value="inactive"
-        checked= (product.status=="inactive"? true: false)
+        checked=  category.status=="inactive"? true: false
       )
       label(for="statusInActive" class="form-check-label") Dừng hoạt động
 
@@ -122,6 +95,6 @@ block main
       button(
         type="submit"
         class="btn btn-primary"
-      ) Chập nhật
+      ) Cập nhật
 
   script(src='/admin/js/product.js')

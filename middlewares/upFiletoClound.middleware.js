@@ -9,7 +9,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-module.exports.uploadToCloudinary = (folder)  => async (req, res, next) => {
+module.exports.uploadToCloudinary = (folder) => async (req, res, next) => {
     try {
         if (!req.file) {
             return next();
