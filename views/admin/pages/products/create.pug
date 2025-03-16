@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert
+include ../../mixins/tree
 block main
   +alertError(5000)
   h1(class="mb-4") Thêm mới sản phẩm
@@ -18,6 +19,10 @@ block main
         name="title"
         
       )
+    select(name="category" id="parent_id" class="form-control")
+      option(value="") -- Chọn danh mục--
+      if recors
+          +tree(recors)
 
     div(class="form-group ")
       label(for="desc") Mô tả

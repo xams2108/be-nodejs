@@ -6,6 +6,10 @@ const productScheme = new mongoose.Schema({
     _id: { type: String, default: () => uuidv4().replace(/-/g, '') + Date.now() },
     title: String,
     description: String,
+    category: {
+        type: String,
+        default: ""
+    },
     price: Number,
     discountPercentage: Number,
     stock: Number,

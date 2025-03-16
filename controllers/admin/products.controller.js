@@ -1,8 +1,10 @@
 
 const Products = require("../../model/products.model")
+const ProductsCategory = require("../../model/products-category.model")
 const FilterStatus = require("../../helper/filterStatus")
 const search = require("../../helper/search.js")
 const pagination = require("../../helper/pagination.js")
+const { TreeHelper } = require("../../helper/createTree")
 const systemConfig = require("../../config/system")
 const mongoose = require("mongoose");
 
@@ -103,9 +105,15 @@ module.exports.delete = async (req, res) => {
 }
 
 //GET /admin/products/create
-module.exports.create = (req, res) => {
-    res.render("admin/pages/products/create", {
+module.exports.create = async (req, res) => {
+    const find = {
+        deleted: false,
 
+    }
+    const recor = await ProductsCategory.find(find)
+    const newrecor = await TreeHelper(recor)
+    res.render("admin/pages/products/create", {
+        recors: newrecor
     })
 }
 
@@ -114,6 +122,7 @@ module.exports.createPOST = async (req, res) => {
     req.body.price = parseInt(req.body.price);
     req.body.discountPercentage = parseInt(req.body.discountPercentage);
     req.body.stock = parseInt(req.body.stock);
+    console.log(req.body)
     if (req.body.position == "") {
         const count = await Products.countDocuments();
         req.body.position = count + 1;
@@ -126,13 +135,12 @@ module.exports.createPOST = async (req, res) => {
 }
 //GET admin/pages/products/edit
 module.exports.edit = async (req, res) => {
-    const find = {
-        deleted: false,
-        _id: req.params.id
-    }
-    const product = await Products.findOne(find)
+    const recor = await ProductsCategory.find({ deleted: false })
+    const newrecor = await TreeHelper(recor)
+    const product = await Products.findOne({ deleted: false, _id: req.params.id })
     res.render("admin/pages/products/edit", {
-        product: product
+        product: product,
+        recors: newrecor
     })
 
 }
@@ -162,7 +170,9 @@ module.exports.detail = async (req, res) => {
         _id: req.params.id
     }
     const product = await Products.findOne(find)
+    const category = await ProductsCategory.findOne({ _id: product.category })
     res.render("admin/pages/products/detail", {
-        product: product
+        product: product,
+        category: category
     })
 }
