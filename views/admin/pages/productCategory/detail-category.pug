@@ -1,0 +1,11 @@
+extends ../../layouts/default
+block main
+    .container.mt-5
+    .row
+      .col-md-6
+        img.img-fluid.rounded.shadow-lg.thumbnail(src=item.thumbnail)
+
+      .col-md-6
+        h1.text-primary= item.title
+        p.text-muted #{item.description}
+        a(href=`/${admin}/products-category/edit/${item._id}` class="btn btn-success") Chỉnh sửa 

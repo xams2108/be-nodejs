@@ -30,6 +30,8 @@ router.patch("/edit/:id",
     controller.editPATCH
 )
 
+//DETAIL
+router.get("/detail/:id", controller.detail)
 
 
 module.exports = router
