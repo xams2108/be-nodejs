@@ -1,0 +1,59 @@
+extends ../../layouts/default
+
+block main
+    if(records)
+        div(data-records=records)
+        div(class="text-right")
+            button(
+                type="submit"
+                class="btn btn-success mb-1"
+                button-submit
+            ) Cập nhật
+        table(class="table table-bordered" table-permissions)
+            thead
+                tr
+                    th Tính năng
+                    each item in records
+                        th.text-center #{item.title}
+            tbody
+                tr
+                    td(colspan=records.length + 1)
+                        strong Danh mục sản phẩm
+                tr(data-name="id" class="d-none")
+                    each item in records
+                        td.text-center
+                            input(type="text" value=item._id)
+                tr(data-name="products-category_view")
+                    td Xem
+                    each item in records
+                        td.text-center
+                            input(type="checkbox")
+                tr(data-name="products-category_create")
+                    td Thêm mới
+                    each item in records
+                        td.text-center
+                            input(type="checkbox")
+                tr(data-name="products-category_edit")
+                    td Chỉnh sửa
+                    each item in records
+                        td.text-center
+                            input(type="checkbox")
+                tr(data-name="products-category_delete")
+                    td Xóa
+                    each item in records
+                        td.text-center
+                            input(type="checkbox")
+    form(
+        id="form-change-permissions"
+        method="POST"
+        action=`/${admin}/roles/permissions?_method=PATCH`
+        class="d-none"
+    )
+        .form-group
+            input(
+                type="text"
+                class="form-control"
+                name="permissions"
+                placeholder="Nhập quyền"
+            )
+    script(src="/admin/js/roles.js")

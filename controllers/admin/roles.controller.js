@@ -72,3 +72,22 @@ module.exports.delete = async (req, res) => {
     req.flash("success", `Xóa quyền ${req.body.title} thành công`)
     res.redirect(`/${systemConfig.PathAdmin}/roles`)
 }
+//GET permissions
+module.exports.permissions = async (req, res) => {
+    let find = {
+        deleted: false
+    }
+    const records = await Roles.find(find)
+    res.render("admin/pages/roles/permissions", {
+        records: records
+    })
+}
+module.exports.permissionsPATCH = async (req, res) => {
+    console.log(req.body.permissions)
+    const permissions = JSON.parse(req.body.permissions)
+    for (const item of permissions) {
+        await Roles.updateOne({ _id: item.id }, { permissions: item.permissions })
+    }
+    res.redirect("back")
+
+}
