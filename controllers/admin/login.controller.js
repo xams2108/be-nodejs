@@ -1,8 +1,14 @@
 const Accounts = require("../../model/accounts.model")
 const md5 = require("md5")
+const systemConfig = require("../../config/system")
 module.exports.index = async (req, res) => {
-
-    res.render("admin/pages/login/index", {
+    if (req.cookies.token) {
+        const acccount = await Accounts.findOne({ token: req.cookies.token }).select("-password-token")
+        if (acccount) {
+            res.redirect(`/${systemConfig.PathAdmin}/auth/login`)
+        }
+    }
+    res.render("admin/pages/auth/index", {
 
     })
 }
@@ -25,11 +31,19 @@ module.exports.loginPOST = async (req, res) => {
         res.redirect("back")
         return
     }
-    if (passwordCheck.status != "active") {
+    const user = passwordCheck
+    if (user.status != "active") {
         req.flash("error", "Tài khoản đã bị khóa")
     }
-    req.flash("success", "Đăng nhập thành công")
-    res.redirect("/admin/dashboard")
 
+    req.flash("success", "Đăng nhập thành công")
+    res.cookie("token", user.token)
+    res.redirect(`/admin/dashboard`)
+
+
+}
+module.exports.logout = async (req, res) => {
+    res.clearCookie("token")
+    res.redirect(`/${systemConfig.PathAdmin}/auth/login`)
 
 }

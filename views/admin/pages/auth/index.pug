@@ -6,7 +6,7 @@ block main
     +alertError(5000)
     .login-container
         h2 Đăng nhập
-        form(action=`/${admin}/login`, method="POST")
+        form(action=`/${admin}/auth/login`, method="POST")
             .form-group
                 label(for="email") Email
                 input#email.form-control(type="email", name="email", placeholder="Nhập email")
