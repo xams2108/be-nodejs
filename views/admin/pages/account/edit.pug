@@ -1,0 +1,49 @@
+extends ../../layouts/default
+include ../../mixins/alert
+block main
+  +alertSuccess(5000)
+  +alertError(5000)
+  div(class="container mt-5")
+    h1(class="mb-4") Sửa tài khoản
+
+    form(action=`/${admin}/account/edit/${account._id}?_method=PATCH` method="POST" enctype="multipart/form-data")
+      input(type="hidden" name="_csrf" value=csrfToken)
+
+      div(class="form-group mb-3")
+        label(for="fullName") Họ tên 
+        input(type="text" class="form-control" id="fullname" name="fullname" value=account.fullname required)
+
+      div(class="form-group mb-3")
+        label(for="email") Email *
+        input(type="email" class="form-control" id="email" name="email" value=account.email  required)
+
+      div(class="form-group mb-3")
+        label(for="password") Mật khẩu 
+        input(type="password" class="form-control" id="password" name="password" required)
+
+      div(class="form-group mb-3")
+        label(for="phone") Số điện thoại
+        input(type="tel" class="form-control" id="phone" name="phone" value=account.phone)
+
+      div(class="form-group mb-3")
+        label(for="thumbnail") Ảnh
+        input(type="file" class="form-control-file" id="thumbnail" name="thumbnail" accept="image/*" value=account.thumbnail upload-img-input)
+
+      if(roles)
+        div(class="form-group mb-3")
+          label(for="permission") Phân quyền
+          select(class="form-control" id="permission" name="role_id")
+            option(value="") --Chọn--
+            each item in roles
+              option(value=item.id selected=(account.role_id==item.id? true: false) ) #{item.title}
+              
+      div(class="form-group mb-3 d-flex")
+        div(class="form-check mr-2")
+          input(type="checkbox" class="form-check-input" id="active" name="status" value="active" checked=(account.status=="active"? true: false) )
+          label(class="form-check-label" for="active") Hoạt động
+        div(class="form-check")
+          input(type="checkbox" class="form-check-input" id="inactive" name="status" value="inactive" checked=(account.status=="inactive"? true: false))
+          label(class="form-check-label" for="inactive") Dừng hoạt động
+
+      //- Nút submit
+      button(type="submit" class="btn btn-primary") Cập nhật

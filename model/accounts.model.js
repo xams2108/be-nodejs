@@ -10,11 +10,18 @@ const AccountsScheme = new mongoose.Schema({
         type: String,
         default: ""
     },
+    token: {
+        type: String,
+        default: () => uuidv4().replace(/-/g, '') + Date.now()
+    },
     thumbnail: {
         type: String,
         default: "https://static.vecteezy.com/system/resources/thumbnails/048/421/274/small/concept-of-no-items-found-no-results-found-user-request-page-not-found-error-notification-404-web-and-mobile-application-symbols-illustration-in-the-background-vector.jpg"
     },
-    status: String,
+    status: {
+        type: String,
+        default: "acctive"
+    },
     deleted: {
         type: Boolean,
         default: false,

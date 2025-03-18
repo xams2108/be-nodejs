@@ -18,5 +18,10 @@ router.post("/create",
     upFileCloudMiddleWare.uploadToCloudinary("account"),
     controller.createPOST)
 
-
+router.get("/edit/:id", controller.edit)
+router.patch("/edit/:id",
+    upload.single("thumbnail"),
+    validate.check,
+    upFileCloudMiddleWare.uploadToCloudinary("account"),
+    controller.editPATCH)
 module.exports = router
