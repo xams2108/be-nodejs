@@ -6,6 +6,10 @@ const productScheme = new mongoose.Schema({
     _id: { type: String, default: () => uuidv4().replace(/-/g, '') + Date.now() },
     title: String,
     description: String,
+    featured: {
+        type: Boolean,
+        default: false
+    },
     category: {
         type: String,
         default: ""

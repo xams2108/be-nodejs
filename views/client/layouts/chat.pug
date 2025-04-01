@@ -1,0 +1,25 @@
+doctype html
+html(lang="vi")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Chat App
+    link(rel="stylesheet", href="style.css")
+  
+  body
+    //- PHẦN LAYOUT CỐ ĐỊNH
+    .app-container
+      //- Header
+      header.chat-header
+        block header-title
+          h1 Em Yêu 💖
+
+      //- Block main (sẽ được override)
+      main.chat-main
+        block chat-content
+
+      //- Footer (input chat)
+      footer.chat-footer
+        block chat-input
+          input(type="text", placeholder="Nhập nội dung...")
+          button Gửi

@@ -1,0 +1,5 @@
+mixin submenu(model, path)
+    ul.sub-menu-list
+                    each category in categorys
+                        li.sub-menu-item
+                            a.sub-menu-link(href=`${pathProduct}/${category.slug}`)= category.title

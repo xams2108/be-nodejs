@@ -22,7 +22,7 @@ module.exports.detail = async (req, res) => {
         status: "active",
         slug: req.params.slug
     }
-    const product = await Products.findOne(find) 
+    const product = await Products.findOne(find)
     res.render("client/pages/products/detail", {
         title: "Chi tiết sảm phẩm",
         product: product

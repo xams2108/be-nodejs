@@ -1,0 +1,60 @@
+extends ../../layouts/default.pug
+
+block main
+  .container.my-4
+    h2.mb-4 Thông tin đơn hàng
+    
+    if(cart.products.length > 0)
+      .row
+        .col-md-8
+          h4.mb-3 Sản phẩm
+          table.table.table-bordered
+            thead
+              tr
+                th(scope="col") Sản phẩm
+                th(scope="col") Giá
+                th(scope="col") Số lượng
+                th(scope="col") Tổng
+            tbody
+              each item in cart.products
+                tr
+                  td
+                    .d-flex.align-items-center
+                      img(src=item.product.thumbnail, alt=item.product.title, style="width: 60px; height: 60px; object-fit: cover; margin-right: 15px")
+                      div= item.product.title
+                  td #{item.product.price.toLocaleString()}₫
+                  td #{item.quantity}
+                  td #{(item.product.price * item.quantity).toLocaleString()}₫
+
+        .col-md-4
+          .card
+            .card-body
+              h4.card-title Tổng kết
+              hr
+              .d-flex.justify-content-between.mb-2
+                span Tạm tính:
+                span #{cart.subtotal.toLocaleString()}₫
+              
+              .d-flex.justify-content-between.mb-2
+                span Phí vận chuyển:
+                span 30,000₫
+              
+              .d-flex.justify-content-between.fw-bold.mb-3
+                span Tổng cộng:
+                span #{(cart.subtotal + 30000).toLocaleString()}₫
+              
+              a.btn.btn-outline-secondary.mt-2(href="/cart") Quay lại giỏ hàng
+    
+    else
+      .alert.alert-warning.text-center
+        p.h4 Giỏ hàng của bạn đang trống
+        a.btn.btn-primary(href="/products") Tiếp tục mua sắm
+
+block css
+  style.
+    .card {
+      box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+    }
+    img {
+      border-radius: 4px;
+    }

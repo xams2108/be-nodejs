@@ -1,27 +1,138 @@
 extends ../../layouts/default.pug
-block main 
-    .container.my-3
-        .row 
-            .col-12
-                if (product.title)
-                    h1(class="mb-4") #{product.title}
+include ../../mixins/alert.pug
 
-                if (product.price)
-                    div(class="mb-4") Giá: <b>#{product.price}$</b>
+block main
+  .product-detail(style="background-color: #f8f9fa; padding: 30px 0")
+    .container
+      .row
+        .col-md-6
+          .product-gallery(style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05)")
+            .main-image(style="margin-bottom: 15px; text-align: center")
+              img(
+                src=product.thumbnail || "/images/default-product.jpg", 
+                alt=product.title,
+                style="max-width: 100%; max-height: 400px; object-fit: contain"
+              )
+            
+            if (product.images && product.images.length > 0)
+              .thumbnail-list(style="display: flex; gap: 10px; overflow-x: auto; padding: 10px 0")
+                each image in product.images
+                  img(
+                    src=image,
+                    alt=product.title,
+                    style="width: 80px; height: 80px; object-fit: cover; border: 1px solid #ddd; cursor: pointer",
+                    onclick=`document.querySelector('.main-image img').src='${image}'`
+                  )
 
-                if (product.discountPercentage)
-                    div(class="mb-4") Giảm giá: <b>#{product.discountPercentage}%</b>
+        .col-md-6
+          .product-info(style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); height: 100%")
+            h1(style="font-size: 24px; margin-bottom: 15px; color: #333") #{product.title}
+            
+            .product-meta(style="margin-bottom: 20px")
+              if (product.category)
+                .category(style="margin-bottom: 8px")
+                  span(style="color: #666") Danh mục: 
+                  a(href=`/products/${product.category.slug}` style="color: #007bff") #{product.category.title}
+              
+              if (product.position)
+                .position(style="margin-bottom: 8px")
+                  span(style="color: #666") Vị trí: 
+                  span(style="color: #333") #{product.position}
 
-                if (product.stock)
-                    div(class="mb-4") Còn lại: <b>#{product.stock}</b>
+            .product-price(style="margin-bottom: 20px")
+              if (product.discountPercentage > 0)
+                - const discountedPrice = product.price * (100 - product.discountPercentage) / 100
+                .old-price(style="font-size: 18px; color: #999; text-decoration: line-through") #{product.price.toLocaleString()}$
+                .new-price(style="font-size: 28px; color: #ff424e; font-weight: bold") 
+                  | #{discountedPrice.toLocaleString()}$
+                  span.badge.badge-danger.ml-2(style="background: #ff424e; font-size: 14px; vertical-align: middle") -#{product.discountPercentage}%
+              else
+                .current-price(style="font-size: 28px; color: #ff424e; font-weight: bold") #{product.price.toLocaleString()}$
 
-                if (product.thumbnail)
-                    div(class="mb-4")
-                        img(src=product.thumbnail style="width: 100px")
-                if (product.position)
-                    div(class="mb-4") Vị trí: <b>#{product.position}</b>
+            .product-stock(style="margin-bottom: 25px")
+              if (product.stock > 0)
+                span.badge.badge-success(style="background: #28a745; padding: 6px 10px") Còn hàng (#{product.stock.toLocaleString()} sản phẩm)
+              else
+                span.badge.badge-danger(style="background: #dc3545; padding: 6px 10px") Hết hàng
 
-                if (product.description)
-                    div(class="mb-4") #{product.description}
-                
-    
+            if (product.stock > 0)
+              form(action=`/cart/add` method="POST")
+                input(type="hidden" name="productId" value=product._id)
+                .product-quantity(style="margin-bottom: 25px")
+                  label(style="display: block; margin-bottom: 8px; font-weight: 500") Số lượng:
+                  .input-group(style="width: 150px")
+                    button.btn.btn-outline-secondary(
+                      type="button"
+                      style="width: 40px"
+                      onclick="this.nextElementSibling.stepDown(); this.nextElementSibling.dispatchEvent(new Event('change'))"
+                    ) -
+                    input.form-control(
+                      type="number"
+                      name="quantity"
+                      min="1"
+                      max=product.stock
+                      value="1"
+                      style="text-align: center"
+                    )
+                    button.btn.btn-outline-secondary(
+                      type="button"
+                      style="width: 40px"
+                      onclick="this.previousElementSibling.stepUp(); this.previousElementSibling.dispatchEvent(new Event('change'))"
+                    ) +
+
+                .product-actions(style="display: flex; gap: 15px; flex-wrap: wrap")
+                  button.btn.btn-danger(
+                    type="submit"
+                    style="flex: 1; min-width: 200px; padding: 12px; font-weight: 600; background: #ff424e; border: none"
+                    onmouseover="this.style.backgroundColor='#e53935'"
+                    onmouseout="this.style.backgroundColor='#ff424e'"
+                  ) 
+                    i.fas.fa-shopping-cart.mr-2
+                    |Thêm vào giỏ hàng
+                  
+                  a.btn.btn-primary(
+                    href="/checkout"
+                    style="flex: 1; min-width: 200px; padding: 12px; font-weight: 600; border: none; text-align: center"
+                    onmouseover="this.style.backgroundColor='#0069d9'"
+                    onmouseout="this.style.backgroundColor='#007bff'"
+                  ) 
+                    i.fas.fa-bolt.mr-2
+                    | Mua ngay
+            else
+              .product-actions(style="display: flex; gap: 15px; flex-wrap: wrap")
+                button.btn.btn-secondary(
+                  type="button"
+                  style="flex: 1; padding: 12px; font-weight: 600"
+                  disabled
+                ) 
+                  i.fas.fa-bell.mr-2
+                  | Thông báo khi có hàng
+
+            .product-description(style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px")
+              h3(style="font-size: 18px; margin-bottom: 15px") Mô tả sản phẩm
+              div(style="color: #555; line-height: 1.6") !{product.description}
+
+  +alertSuccess(5000)
+  +alertError(5000)
+
+  style.
+    .input-group button {
+      background: #f8f9fa;
+    }
+    .input-group button:hover {
+      background: #e9ecef;
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+    .product-gallery img {
+      transition: transform 0.3s ease;
+    }
+    .product-gallery img:hover {
+      transform: scale(1.02);
+    }

@@ -5,7 +5,7 @@ module.exports.index = async (req, res) => {
     if (req.cookies.token) {
         const acccount = await Accounts.findOne({ token: req.cookies.token }).select("-password-token")
         if (acccount) {
-            res.redirect(`/${systemConfig.PathAdmin}/auth/login`)
+            return res.redirect(`/${systemConfig.PathAdmin}/dashboard`);
         }
     }
     res.render("admin/pages/auth/index", {

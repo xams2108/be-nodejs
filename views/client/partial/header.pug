@@ -1,10 +1,50 @@
-header.header.container.row.align-items-center
-    .col-3.inner-logo
-        a(href="/" alt="logo")
-            img(src="/images/logoMU.png", alt="Logo")
-    .col-9.inner-menu
-        ul
-            li
-                a(href="/") Trang chủ
-            li
-                a(href="/products") Sản phẩm
+header.header
+  .container
+    nav.navbar.navbar-expand-lg.navbar-light
+      a.navbar-brand(href="/")
+        img(src="/images/logoMU.png" alt="Logo" style="height: 40px")
+      
+      button.navbar-toggler(
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarContent"
+      )
+        span.navbar-toggler-icon
+      
+      #navbarContent.collapse.navbar-collapse
+        ul.navbar-nav.ml-auto
+          li.nav-item
+            a.nav-link(href="/") Trang chủ
+          
+          li.nav-item.dropdown
+            a.nav-link(
+              href="/products"  
+            ) Sản phẩm
+            
+            // Dropdown chỉ hiện khi hover
+            .dropdown-menu(
+              style="display: none"
+              onmouseover="this.style.display='block'"
+              onmouseout="this.style.display='none'"
+            )
+              if(categorys)
+                each category in categorys
+                  a.dropdown-item(
+                    href=`/products/${category.slug}`
+                  )= category.title
+          li.nav-item
+            a.nav-link(href="/cart" style="position: relative")
+              i.fas.fa-shopping-cart
+              if(cart && cart.products.length > 0)
+                span.badge.badge-danger(style="position: absolute; top: 0; right: 0; transform: translate(25%, -25%)") #{cart.products.length}
+          if(user)
+            li.nav-item.dropdown
+              a.nav-link(href="#") #{user.email}
+              .dropdown-menu
+                a.dropdown-item(href="/user/profile") Hồ sơ cá nhân
+                a.dropdown-item(href="/user/logout") Đăng xuất
+          else
+            li.nav-item
+              a.nav-link(href="/user/login") Đăng nhập
+            li.nav-item
+              a.nav-link(href="/user/register") Đăng ký

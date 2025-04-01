@@ -1,0 +1,181 @@
+extends ../../layouts/default
+
+block css
+  style.
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    
+    .chat-app {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      height: 80vh;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .chat-header {
+      background: #ff4d6d;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .chat-messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      background-color: #e5ddd5;
+    }
+    
+    .message {
+      margin-bottom: 15px;
+      max-width: 75%;
+      padding: 8px 12px;
+      border-radius: 7.5px;
+      line-height: 1.4;
+      position: relative;
+      word-wrap: break-word;
+    }
+    
+    .received {
+      background: white;
+      margin-right: auto;
+      border-top-left-radius: 0;
+    }
+    
+    .received .sender {
+      font-weight: bold;
+      color: #ff4d6d;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+    
+    .sent {
+      background: #dcf8c6;
+      margin-left: auto;
+      border-top-right-radius: 0;
+    }
+    
+    .sent .content {
+      color: #333;
+    }
+    
+    .chat-input {
+      padding: 10px;
+      background: #f0f0f0;
+      display: flex;
+    }
+    
+    .chat-input input {
+      flex: 1;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 20px;
+      outline: none;
+      font-size: 14px;
+    }
+    
+    .chat-input button {
+      margin-left: 10px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 20px;
+      background: #ff4d6d;
+      color: white;
+      cursor: pointer;
+    }
+    
+    .chat-input button:hover {
+      background: #e43e5c;
+    }
+
+    /* New typing indicator styles */
+    .box-typing {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 8px 12px;
+      background: white;
+      border-radius: 7.5px;
+      width: fit-content;
+      border-top-left-radius: 0;
+    }
+
+    .inner-name {
+      font-weight: bold;
+      color: #ff4d6d;
+      font-size: 13px;
+      margin-right: 8px;
+    }
+
+    .inner-dots {
+      display: flex;
+      align-items: center;
+    }
+
+    .inner-dots span {
+      width: 6px;
+      height: 6px;
+      background-color: #888;
+      border-radius: 50%;
+      margin: 0 2px;
+      animation: typingAnimation 1.4s infinite ease-in-out;
+      display: inline-block;
+    }
+
+    .inner-dots span:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .inner-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .inner-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typingAnimation {
+      0%, 60%, 100% {
+        transform: translateY(0);
+      }
+      30% {
+        transform: translateY(-3px);
+      }
+    }
+
+block main
+  .chat-app
+    .chat-header
+    
+    .myID #{user._id}
+    .chat-messages
+        each chat in chats
+            .message(class =(user._id == chat.user_id ? 'sent' : 'received'))
+                if user._id != chat.user_id
+                    .sender #{chat.infoUser.email}
+                .content #{chat.content}
+        //- Typing indicator (hidden by default)
+        .box-typing(style="display: none")
+
+    form.chat-input
+      input(type='text' name='input' placeholder='Nhập tin nhắn...')
+      span(class="button-icon") Icon
+      button(type="submit") Gửi
+  div(class="tooltip" role="tooltip")
+    emoji-picker

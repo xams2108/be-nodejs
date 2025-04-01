@@ -1,0 +1,29 @@
+extends ../../layouts/auth.pug
+include ../../mixins/alert
+
+block content
+    +alertError(5000)
+    +alertSuccess(5000)
+    .auth-form
+        h2.text-center.mb-4 Đăng ký tài khoản
+        form(action="/user/register", method="POST")
+            .mb-3
+                label.form-label(for="fullName") Họ và tên
+                input.form-control(type="text", id="fullName", name="fullname")
+            
+            .mb-3
+                label.form-label(for="email") Email
+                input.form-control(type="email", id="email", name="email")
+            
+            .mb-3
+                label.form-label(for="password") Mật khẩu
+                input.form-control(type="password", id="password", name="password")
+            
+            .mb-3
+                label.form-label(for="confirmPassword") Nhập lại mật khẩu
+                input.form-control(type="password", id="confirmPassword", name="confirmPassword")
+            
+            button.btn.btn-primary.w-100(type="submit") Đăng ký
+        
+        .mt-3.text-center
+            a(href="/auth/login") Đã có tài khoản? Đăng nhập ngay

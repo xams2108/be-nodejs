@@ -1,0 +1,62 @@
+extends ../../layouts/default.pug
+
+block main
+  .container.my-4
+    h2.mb-4 Giỏ hàng của bạn
+    if(cart.products.length > 0)
+      .cart-items
+        table.table.table-bordered
+          thead
+            tr
+              th(scope="col") Sản phẩm
+              th(scope="col") Giá
+              th(scope="col") Số lượng
+              th(scope="col") Tổng
+              th(scope="col") Thao tác
+          tbody
+            each item in cart.products
+              tr
+                td
+                  .d-flex.align-items-center
+                    img(src=item.product.thumbnail, alt=item.product.title, style="width: 60px; height: 60px; object-fit: cover; margin-right: 15px")
+                    div= item.product.title
+                td #{item.product.price.toLocaleString()}₫
+                td
+                  input.form-control(
+                    change-quantity-cart
+                    dataProductId=item.product._id
+                    type="number"
+                    value=item.quantity
+                    min="1"
+                    style="width: 70px"
+                  )
+                td #{(item.product.price * item.quantity).toLocaleString()}₫
+                td
+                  form(action=`/cart/delete/${item.product._id}` method="POST")
+                      button.btn.btn-danger.btn-sm Xóa
+        
+        .cart-summary.mt-4.p-3.bg-light.rounded
+          .d-flex.justify-content-between.mb-3
+            h5.mb-0 Tổng cộng:
+            h5.mb-0 #{cart.subtotal.toLocaleString()}₫
+          a.btn.btn-primary.btn-block(href="cart/checkout") Thanh toán
+    
+    else
+      .empty-cart.text-center.py-5
+        i.fas.fa-shopping-cart.fa-4x.mb-3.text-muted
+        p.h4.text-muted Giỏ hàng của bạn đang trống
+        a.btn.btn-primary(href="/products") Tiếp tục mua sắm
+
+block css
+  style.
+    .cart-items img {
+      border-radius: 4px;
+    }
+    .empty-cart {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .btn-block {
+      padding: 10px;
+      font-size: 1.1rem;
+    }

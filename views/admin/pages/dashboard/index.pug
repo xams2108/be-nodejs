@@ -2,4 +2,4 @@ extends ../../layouts/default.pug
 include ../../mixins/alert
 block main
     +alertSuccess(5000)
-    h1= text
+    h1 #{user.fullname}
